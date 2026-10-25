@@ -3,52 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>فروشگاه‌ساز هوشمند</title>
+    <title>پنل فروشگاه‌ساز هوشمند</title>
     <style>
+        * { box-sizing: border-box; }
+
         body {
-            font-family: Tahoma, Arial, sans-serif;
-            background: #f4f6fb;
-            color: #20283a;
             margin: 0;
-            padding: 30px 18px;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f5f6fa;
+            color: #202437;
         }
-        main {
-            max-width: 850px;
-            margin: auto;
-        }
-        section {
+
+        header {
             background: white;
-            padding: 22px;
-            margin-bottom: 18px;
-            border-radius: 12px;
+            border-bottom: 1px solid #e8eaf0;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
         }
-        button, .button {
+
+        header strong {
+            font-size: 19px;
+            color: #3157d5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 18px;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #253fa8, #6179ed);
+            color: white;
+            padding: 32px;
+            border-radius: 18px;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 { margin-top: 0; }
+        .hero p { line-height: 2; }
+
+        .button {
             display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 12px 17px;
             background: #3157d5;
             color: white;
-            padding: 11px 16px;
-            border: 0;
-            border-radius: 7px;
             text-decoration: none;
             font: inherit;
             cursor: pointer;
         }
-        .publish-button {
-            background: #16834a;
-            margin-top: 10px;
+
+        .hero .button {
+            background: white;
+            color: #3157d5;
+            font-weight: bold;
         }
-        .muted { color: #687187; }
-        .messages { padding: 0; list-style: none; }
-        .messages li { margin: 10px 0; }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .stores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 18px;
+        }
+
+        .store-card {
+            background: white;
+            border: 1px solid #e9ebf2;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .store-card h3 { margin-top: 0; }
+
+        .muted {
+            color: #72798c;
+            line-height: 1.9;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 7px;
+            background: #fff1d5;
+            color: #875700;
+            font-size: 13px;
+        }
+
+        .status.published {
+            background: #dff7e9;
+            color: #176b3a;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 20px;
+        }
+
+        .secondary {
+            background: #eef1ff;
+            color: #3157d5;
+        }
+
+        .publish {
+            background: #16834a;
+        }
+
+        .messages {
+            list-style: none;
+            padding: 0;
+        }
+
+        .messages li {
+            background: #e5f7eb;
+            color: #176b3a;
+            padding: 13px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px 20px;
+            border-radius: 14px;
+            text-align: center;
+            line-height: 2;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 16px; }
+            .container { margin-top: 22px; }
+            .hero { padding: 23px; }
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .actions .button,
+            .actions form {
+                width: 100%;
+            }
+            .actions form .button { width: 100%; }
+        }
     </style>
 </head>
 <body>
-<main>
-    <section>
-        <h1>فروشگاه‌ساز هوشمند</h1>
-        <p class="muted">فروشگاه اینترنتی خودت رو با کمک هوش مصنوعی بساز.</p>
+
+<header>
+    <strong>فروشگاه‌ساز هوشمند</strong>
+    <span class="muted">پنل مدیریت فروشگاه‌ها</span>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>فروشگاه اینترنتی خودت رو بساز</h1>
+        <p>
+            اطلاعات کسب‌وکارت رو وارد کن، با کمک هوش مصنوعی محتوای فروشگاهت
+            رو بساز و بعد از آماده‌سازی، اون رو منتشر کن.
+        </p>
         <a class="button" href="{% url 'websites:create' %}">
-            ساخت فروشگاه جدید
+            + ساخت فروشگاه جدید
         </a>
     </section>
 
@@ -60,40 +187,68 @@
         </ul>
     {% endif %}
 
-    <h2>فروشگاه‌های من</h2>
+    <div class="section-heading">
+        <h2>فروشگاه‌های من</h2>
+        <span class="muted">{{ websites|length }} فروشگاه</span>
+    </div>
 
-    {% for website in websites %}
-        <section>
-            <h3>{{ website.name }}</h3>
-            <p>{{ website.get_business_type_display }}</p>
-            <p>{{ website.description }}</p>
-            <p>وضعیت: {{ website.get_status_display }}</p>
+    <div class="stores">
+        {% for website in websites %}
+            <section class="store-card">
+                <h3>{{ website.name }}</h3>
 
-            <form method="post"
-                  action="{% url 'site_generator:generate_homepage' website.id %}">
-                {% csrf_token %}
-                <button type="submit">تولید محتوای صفحه اصلی با هوش مصنوعی</button>
-            </form>
-
-            {% if website.status != "published" %}
-                <form method="post"
-                      action="{% url 'site_generator:publish_website' website.id %}">
-                    {% csrf_token %}
-                    <button class="publish-button" type="submit">
-                        انتشار فروشگاه
-                    </button>
-                </form>
-            {% else %}
-                <p>
-                    <a href="{% url 'site_generator:public_website' website.id %}">
-                        مشاهده سایت
-                    </a>
+                <p class="muted">
+                    {{ website.get_business_type_display }}
                 </p>
-            {% endif %}
-        </section>
-    {% empty %}
-        <section>هنوز فروشگاهی نساخته‌ای.</section>
-    {% endfor %}
+
+                <p class="muted">
+                    {{ website.description|default:"هنوز توضیحاتی ثبت نشده است." }}
+                </p>
+
+                <p>
+                    <span class="status {% if website.status == 'published' %}published{% endif %}">
+                        {{ website.get_status_display }}
+                    </span>
+                </p>
+
+                <div class="actions">
+                    <form method="post"
+                          action="{% url 'site_generator:generate_homepage' website.id %}">
+                        {% csrf_token %}
+                        <button class="button" type="submit">
+                            تولید محتوا با هوش مصنوعی
+                        </button>
+                    </form>
+
+                    {% if website.status != "published" %}
+                        <form method="post"
+                              action="{% url 'site_generator:publish_website' website.id %}">
+                            {% csrf_token %}
+                            <button class="button publish" type="submit">
+                                انتشار فروشگاه
+                            </button>
+                        </form>
+                    {% else %}
+                        <a class="button secondary"
+                           href="{% url 'site_generator:public_website' website.id %}">
+                            مشاهده فروشگاه
+                        </a>
+                    {% endif %}
+                </div>
+            </section>
+        {% empty %}
+            <section class="empty">
+                <h3>هنوز فروشگاهی نساخته‌ای</h3>
+                <p class="muted">
+                    اولین فروشگاهت رو بساز تا کار رو شروع کنیم.
+                </p>
+                <a class="button" href="{% url 'websites:create' %}">
+                    ساخت اولین فروشگاه
+                </a>
+            </section>
+        {% endfor %}
+    </div>
+
 </main>
 </body>
 </html>

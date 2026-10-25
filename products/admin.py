@@ -1,7 +1,7 @@
-
 from django.contrib import admin
 from django.db import transaction
 
+from .forms import ProductAdminForm
 from .models import Category, Product, Order, OrderItem
 
 
@@ -14,6 +14,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    form = ProductAdminForm
+
     list_display = (
         "name",
         "website",

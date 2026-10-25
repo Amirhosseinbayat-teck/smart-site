@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ویرایش صفحه اصلی</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f5f6fa;
+            color: #202437;
+        }
+        main {
+            max-width: 760px;
+            margin: 20px auto;
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+        }
+        h1 { font-size: 24px; }
+        .muted { color: #72798c; line-height: 1.8; }
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 20px 0 8px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dce0e9;
+            border-radius: 8px;
+            font: inherit;
+            background: white;
+        }
+        textarea { resize: vertical; }
+        button, .back {
+            display: inline-block;
+            border: 0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 22px;
+            font: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        button { background: #3157d5; color: white; }
+        .back { background: #eef1ff; color: #3157d5; }
+        .errorlist { color: #b42318; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>ویرایش صفحه اصلی</h1>
+    <p class="muted">
+        فروشگاه: {{ website.name }}<br>
+        محتوای تولیدشده با هوش مصنوعی رو می‌تونی تغییر بدی.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {{ field.errors }}
+        {% endfor %}
+
+        <button type="submit">ذخیره تغییرات</button>
+        <a class="back" href="{% url 'websites:dashboard' %}">بازگشت</a>
+    </form>
+</main>
+</body>
+</html>
