@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ساخت فروشگاه جدید</title>
+    <style>
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f4f6fb;
+            color: #20283a;
+            margin: 0;
+            padding: 35px 18px;
+        }
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px #18213b0c;
+        }
+        label {
+            display: block;
+            margin: 20px 0 8px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7dceb;
+            border-radius: 8px;
+            font: inherit;
+        }
+        textarea { min-height: 140px; resize: vertical; }
+        button {
+            margin-top: 22px;
+            background: #3157d5;
+            color: white;
+            padding: 13px 20px;
+            border: 0;
+            border-radius: 8px;
+            font: inherit;
+            cursor: pointer;
+        }
+        a { color: #3157d5; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>ساخت فروشگاه جدید</h1>
+        <p>اطلاعات اولیه کسب‌وکارت رو وارد کن.</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="name">نام فروشگاه</label>
+            <input id="name" name="name" required maxlength="150"
+                   placeholder="مثلاً فروشگاه ماه‌رخ">
+
+            <label for="business_type">نوع کسب‌وکار</label>
+            <select id="business_type" name="business_type" required>
+                <option value="clothing">پوشاک</option>
+                <option value="digital">کالای دیجیتال</option>
+                <option value="beauty">زیبایی و بهداشتی</option>
+                <option value="food">مواد غذایی</option>
+                <option value="home">خانه و آشپزخانه</option>
+                <option value="other" selected>سایر</option>
+            </select>
+
+            <label for="description">توضیحات فروشگاه</label>
+            <textarea id="description" name="description"
+                      placeholder="چه محصولاتی می‌فروشی؟ ظاهر سایت چه سبکی باشه؟"></textarea>
+
+            <button type="submit">ثبت فروشگاه</button>
+        </form>
+
+        <p><a href="{% url 'websites:dashboard' %}">بازگشت به داشبورد</a></p>
+    </main>
+</body>
+</html>

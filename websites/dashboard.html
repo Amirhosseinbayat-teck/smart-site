@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>داشبورد فروشگاه‌ساز هوشمند</title>
+</head>
+<body>
+    <h1>فروشگاه‌ساز هوشمند</h1>
+    <p>فروشگاه اینترنتی خودت رو با کمک هوش مصنوعی بساز.</p>
+
+    <a href="{% url 'websites:create' %}">ساخت فروشگاه جدید</a>
+
+    <h2>فروشگاه‌های من</h2>
+
+    {% for website in websites %}
+        <section>
+            <h3>{{ website.name }}</h3>
+            <p>{{ website.get_business_type_display }}</p>
+            <p>{{ website.description }}</p>
+            <p>وضعیت: {{ website.get_status_display }}</p>
+
+            {% if website.status == "published" %}
+                <a href="{% url 'site_generator:public_website' website.id %}">
+                    مشاهده سایت
+                </a>
+            {% endif %}
+        </section>
+    {% empty %}
+        <p>هنوز فروشگاهی نساخته‌ای.</p>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>فروشگاه‌ساز هوشمند</title>
+    <style>
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f4f6fb;
+            color: #20283a;
+            margin: 0;
+            padding: 30px 18px;
+        }
+        main {
+            max-width: 850px;
+            margin: auto;
+        }
+        section {
+            background: white;
+            padding: 22px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+        }
+        button, .button {
+            display: inline-block;
+            background: #3157d5;
+            color: white;
+            padding: 11px 16px;
+            border: 0;
+            border-radius: 7px;
+            text-decoration: none;
+            font: inherit;
+            cursor: pointer;
+        }
+        .publish-button {
+            background: #16834a;
+            margin-top: 10px;
+        }
+        .muted { color: #687187; }
+        .messages { padding: 0; list-style: none; }
+        .messages li { margin: 10px 0; }
+    </style>
+</head>
+<body>
+<main>
+    <section>
+        <h1>فروشگاه‌ساز هوشمند</h1>
+        <p class="muted">فروشگاه اینترنتی خودت رو با کمک هوش مصنوعی بساز.</p>
+        <a class="button" href="{% url 'websites:create' %}">
+            ساخت فروشگاه جدید
+        </a>
+    </section>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>فروشگاه‌های من</h2>
+
+    {% for website in websites %}
+        <section>
+            <h3>{{ website.name }}</h3>
+            <p>{{ website.get_business_type_display }}</p>
+            <p>{{ website.description }}</p>
+            <p>وضعیت: {{ website.get_status_display }}</p>
+
+            <form method="post"
+                  action="{% url 'site_generator:generate_homepage' website.id %}">
+                {% csrf_token %}
+                <button type="submit">تولید محتوای صفحه اصلی با هوش مصنوعی</button>
+            </form>
+
+            {% if website.status != "published" %}
+                <form method="post"
+                      action="{% url 'site_generator:publish_website' website.id %}">
+                    {% csrf_token %}
+                    <button class="publish-button" type="submit">
+                        انتشار فروشگاه
+                    </button>
+                </form>
+            {% else %}
+                <p>
+                    <a href="{% url 'site_generator:public_website' website.id %}">
+                        مشاهده سایت
+                    </a>
+                </p>
+            {% endif %}
+        </section>
+    {% empty %}
+        <section>هنوز فروشگاهی نساخته‌ای.</section>
+    {% endfor %}
+</main>
+</body>
+</html>

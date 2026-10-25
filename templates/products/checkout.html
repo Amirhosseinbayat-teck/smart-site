@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ثبت سفارش | {{ website.name }}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f5f7fb;
+            color: #20283a;
+            line-height: 1.9;
+        }
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+        }
+        h1 { font-size: 25px; }
+        .product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e5e9f2;
+        }
+        input, textarea, button {
+            font: inherit;
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd2e1;
+            border-radius: 8px;
+        }
+        input[type="number"] { width: 90px; }
+        label { display: block; margin-top: 16px; }
+        button {
+            margin-top: 22px;
+            background: #3157d5;
+            color: white;
+            border: 0;
+            cursor: pointer;
+        }
+        .message { padding: 10px; background: #fff2d5; border-radius: 8px; }
+        .price { color: #16834a; font-weight: bold; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>ثبت سفارش از {{ website.name }}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <h2>محصولات</h2>
+
+        {% for product in products %}
+            <div class="product">
+                <div>
+                    <strong>{{ product.name }}</strong>
+                    <div class="price">{{ product.price }} تومان</div>
+                    <small>موجودی: {{ product.stock }}</small>
+                </div>
+                <div>
+                    <label for="quantity_{{ product.id }}">تعداد</label>
+                    <input
+                        id="quantity_{{ product.id }}"
+                        type="number"
+                        name="quantity_{{ product.id }}"
+                        min="0"
+                        max="{{ product.stock }}"
+                        value="0"
+                    >
+                </div>
+            </div>
+        {% empty %}
+            <p>محصول فعالی برای سفارش وجود ندارد.</p>
+        {% endfor %}
+
+        <h2>اطلاعات تحویل</h2>
+
+        <label for="customer_name">نام و نام خانوادگی</label>
+        <input id="customer_name" name="customer_name" maxlength="150" required>
+
+        <label for="phone">شماره تماس</label>
+        <input id="phone" name="phone" type="tel" maxlength="20" required>
+
+        <label for="address">نشانی کامل تحویل</label>
+        <textarea id="address" name="address" rows="4" required></textarea>
+
+        <button type="submit">ثبت سفارش</button>
+    </form>
+</main>
+</body>
+</html>
